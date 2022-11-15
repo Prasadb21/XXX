@@ -1,0 +1,31 @@
+def IterativeFibo(n):
+ f1 = 0
+ f2 = 1
+ for i in range(n):
+ if i < 2:
+ print(i,end = ' ')
+ else:
+ f3 = f1 + f2
+ f1 = f2
+ f2 = f3
+ print(f3,end = ' ')
+# Function to implement Recursive Approach
+def RecursiveFibo(n):
+ if (n == 0 or n == 1):
+ return n
+ else:
+ return (RecursiveFibo(n-1) + RecursiveFibo(n-2))
+
+def main():
+ n = 10
+
+ print("ITERATIVE FIBONACCI: ")
+ IterativeFibo(n)
+
+ print("\nRECURSIVE FIBONACCI: ")
+ for i in range(n):
+ print(RecursiveFibo(i),end = ' ')
+
+if __name__ == '__main__':
+ main()
+ 
