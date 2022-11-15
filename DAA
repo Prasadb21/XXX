@@ -1,3 +1,7 @@
+=========================================================================================================================================================================
+1:-
+
+
 def IterativeFibo(n):
  f1 = 0
  f2 = 1
@@ -29,3 +33,270 @@ def main():
 if __name__ == '__main__':
  main()
  
+============================================================================================================================================================================
+# A Huffman Tree Node
+import heapq
+
+class node:
+	def __init__(self, freq, symbol, left=None, right=None):
+		# frequency of symbol
+		self.freq = freq
+
+		# symbol name (character)
+		self.symbol = symbol
+
+		# node left of current node
+		self.left = left
+
+		# node right of current node
+		self.right = right
+
+		# tree direction (0/1)
+		self.huff = ''
+		
+	def __lt__(self, nxt):
+		return self.freq < nxt.freq
+		
+
+# utility function to print huffman
+# codes for all symbols in the newly
+# created Huffman tree
+def printNodes(node, val=''):
+	
+	# huffman code for current node
+	newVal = val + str(node.huff)
+
+	# if node is not an edge node
+	# then traverse inside it
+	if(node.left):
+		printNodes(node.left, newVal)
+	if(node.right):
+		printNodes(node.right, newVal)
+
+		# if node is edge node then
+		# display its huffman code
+	if(not node.left and not node.right):
+		print(f"{node.symbol} -> {newVal}")
+
+
+# characters for huffman tree
+chars = ['a', 'b', 'c', 'd', 'e', 'f']
+
+# frequency of characters
+freq = [ 5, 9, 12, 13, 16, 45]
+
+# list containing unused nodes
+nodes = []
+
+# converting characters and frequencies
+# into huffman tree nodes
+for x in range(len(chars)):
+	heapq.heappush(nodes, node(freq[x], chars[x]))
+
+while len(nodes) > 1:
+	
+	# sort all the nodes in ascending order
+	# based on their frequency
+	left = heapq.heappop(nodes)
+	right = heapq.heappop(nodes)
+
+	# assign directional value to these nodes
+	left.huff = 0
+	right.huff = 1
+
+	# combine the 2 smallest nodes to create
+	# new node as their parent
+	newNode = node(left.freq+right.freq, left.symbol+right.symbol, left, right)
+
+	heapq.heappush(nodes, newNode)
+
+# Huffman Tree is ready!
+printNodes(nodes[0])
+
+========================================================================================================================================================================
+
+# Structure for an item which stores weight and
+# corresponding value of Item
+class Item:
+	def __init__(self, value, weight):
+		self.value = value
+		self.weight = weight
+
+# Main greedy function to solve problem
+def fractionalKnapsack(W, arr):
+
+	# Sorting Item on basis of ratio
+	arr.sort(key=lambda x: (x.value/x.weight), reverse=True)
+
+	# Result(value in Knapsack)
+	finalvalue = 0.0
+
+	# Looping through all Items
+	for item in arr:
+
+		# If adding Item won't overflow,
+		# add it completely
+		if item.weight <= W:
+			W -= item.weight
+			finalvalue += item.value
+
+		# If we can't add current Item,
+		# add fractional part of it
+		else:
+			finalvalue += item.value * W / item.weight
+			break
+	=========================================================================================================================================================================
+ 
+ # Python3 program to solve N Queen
+# Problem using backtracking
+global N
+N = 4
+
+def printSolution(board):
+	for i in range(N):
+		for j in range(N):
+			print(board[i][j], end = " ")
+		print()
+
+# A utility function to check if a queen can
+# be placed on board[row][col]. Note that this
+# function is called when "col" queens are
+# already placed in columns from 0 to col -1.
+# So we need to check only left side for
+# attacking queens
+def isSafe(board, row, col):
+
+	# Check this row on left side
+	for i in range(col):
+		if board[row][i] == 1:
+			return False
+
+	# Check upper diagonal on left side
+	for i, j in zip(range(row, -1, -1),
+					range(col, -1, -1)):
+		if board[i][j] == 1:
+			return False
+
+	# Check lower diagonal on left side
+	for i, j in zip(range(row, N, 1),
+					range(col, -1, -1)):
+		if board[i][j] == 1:
+			return False
+
+	return True
+
+def solveNQUtil(board, col):
+	
+	# base case: If all queens are placed
+	# then return true
+	if col >= N:
+		return True
+
+	# Consider this column and try placing
+	# this queen in all rows one by one
+	for i in range(N):
+
+		if isSafe(board, i, col):
+			
+			# Place this queen in board[i][col]
+			board[i][col] = 1
+
+			# recur to place rest of the queens
+			if solveNQUtil(board, col + 1) == True:
+				return True
+
+			# If placing queen in board[i][col
+			# doesn't lead to a solution, then
+			# queen from board[i][col]
+			board[i][col] = 0
+
+	# if the queen can not be placed in any row in
+	# this column col then return false
+	return False
+
+# This function solves the N Queen problem using
+# Backtracking. It mainly uses solveNQUtil() to
+# solve the problem. It returns false if queens
+# cannot be placed, otherwise return true and
+# placement of queens in the form of 1s.
+# note that there may be more than one
+# solutions, this function prints one of the
+# feasible solutions.
+def solveNQ():
+	board = [ [0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0] ]
+
+	if solveNQUtil(board, 0) == False:
+		print ("Solution does not exist")
+		return False
+
+	printSolution(board)
+	return True
+
+# Driver Code
+solveNQ()
+
+# This code is contributed by Divyanshu Mehta
+=======================================================================================================================================================================
+	# Returning final value
+	return finalvalue
+
+
+# Driver Code
+if __name__ == "__main__":
+
+	W = 50
+	arr = [Item(60, 10), Item(100, 20), Item(120, 30)]
+
+	# Function call
+	max_val = fractionalKnapsack(W, arr)
+	print(max_val)
+
+========================================================================================================================================================================
+
+# A naive recursive implementation
+# of 0-1 Knapsack Problem
+
+# Returns the maximum value that
+# can be put in a knapsack of
+# capacity W
+
+
+def knapSack(W, wt, val, n):
+
+	# Base Case
+	if n == 0 or W == 0:
+		return 0
+
+	# If weight of the nth item is
+	# more than Knapsack of capacity W,
+	# then this item cannot be included
+	# in the optimal solution
+	if (wt[n-1] > W):
+		return knapSack(W, wt, val, n-1)
+
+	# return the maximum of two cases:
+	# (1) nth item included
+	# (2) not included
+	else:
+		return max(
+			val[n-1] + knapSack(
+				W-wt[n-1], wt, val, n-1),
+			knapSack(W, wt, val, n-1))
+
+# end of function knapSack
+
+
+#Driver Code
+val = [60, 100, 120]
+wt = [10, 20, 30]
+W = 50
+n = len(val)
+print knapSack(W, wt, val, n)
+
+# This code is contributed by Nikhil Kumar Singh
+
+=========================================================================================================================================================================
+
